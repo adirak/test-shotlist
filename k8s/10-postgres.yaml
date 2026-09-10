@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+  namespace: shotlist
+type: Opaque
+stringData:
+  POSTGRES_USER: shot
+  POSTGRES_PASSWORD: shot
+  POSTGRES_DB: shotlist
+  DATABASE_URL: postgresql+asyncpg://shot:shot@db:5432/shotlist
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: shotlist
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: db }
+  template:
+    metadata:
+      labels: { app: db }
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          envFrom:
+            - secretRef: { name: db-secret }
+          ports: [{ containerPort: 5432 }]
+          readinessProbe:
+            exec: { command: ["pg_isready", "-U", "shot", "-d", "shotlist"] }
+            periodSeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits: { memory: 256Mi }
+          volumeMounts:
+            - { name: data, mountPath: /var/lib/postgresql/data }
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: shotlist
+spec:
+  selector: { app: db }
+  ports: [{ port: 5432, targetPort: 5432 }]
