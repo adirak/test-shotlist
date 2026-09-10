@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
+if ! command -v kubectl >/dev/null; then
+  curl -sLo /tmp/kubectl "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  chmod +x /tmp/kubectl && sudo mv /tmp/kubectl /usr/local/bin/kubectl
+fi
 if ! command -v kind >/dev/null; then
   curl -sLo /tmp/kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
   chmod +x /tmp/kind && sudo mv /tmp/kind /usr/local/bin/kind
