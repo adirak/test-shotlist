@@ -1,0 +1,15 @@
+{
+  "name": "shotlist",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": { "minikube": "none" }
+  },
+  "hostRequirements": { "cpus": 4, "memory": "8gb" },
+  "forwardPorts": [80, 8080, 8000],
+  "portsAttributes": {
+    "80":   { "label": "k8s ingress" },
+    "8080": { "label": "compose web" },
+    "8000": { "label": "compose api" }
+  }
+}
