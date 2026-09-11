@@ -6,5 +6,5 @@
     "8080": { "label": "compose web" },
     "8000": { "label": "compose api" }
   },
-  "postStartCommand": "docker start shotlist-control-plane 2>/dev/null || true"
+  "postStartCommand": "bash .devcontainer/on-start.sh"
 }
