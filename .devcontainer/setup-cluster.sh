@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+head -1 /workspaces/.codespaces/.persistedshare/creation.log#!/usr/bin/env bash
 set -euo pipefail
 if ! command -v kubectl >/dev/null; then
   curl -sLo /tmp/kubectl "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
